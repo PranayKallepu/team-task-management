@@ -97,6 +97,7 @@ export default function SignupForm() {
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 required
+                minLength={6}
                 className="pr-9 pl-9"
               />
               <Button
@@ -122,6 +123,7 @@ export default function SignupForm() {
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="••••••••"
                 required
+                minLength={6}
                 className="pr-9 pl-9"
               />
               <Button

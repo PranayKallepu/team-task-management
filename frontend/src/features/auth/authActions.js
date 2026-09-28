@@ -24,7 +24,8 @@ export async function loginAction(prevState, formData) {
 
       const cookieMatches = setCookieHeader.match(/jwt=([^;]+)/);
       if (cookieMatches) {
-        cookies().set({
+        const cookieStore = await cookies();
+        cookieStore.set({
           name: "jwt",
           value: cookieMatches[1],
           httpOnly: true,
@@ -66,7 +67,8 @@ export async function signupAction(prevState, formData) {
     if (setCookieHeader) {
       const cookieMatches = setCookieHeader.match(/jwt=([^;]+)/);
       if (cookieMatches) {
-        cookies().set({
+        const cookieStore = await cookies();
+        cookieStore.set({
           name: "jwt",
           value: cookieMatches[1],
           httpOnly: true,
