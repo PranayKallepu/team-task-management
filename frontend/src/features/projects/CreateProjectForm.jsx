@@ -1,6 +1,5 @@
 "use client";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -12,13 +11,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, FolderPlus, Info, Sparkles } from "lucide-react";
+import { ArrowLeft, FolderPlus, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useActionState, useState } from "react";
+import { createProjectAction } from "./projectAction";
 
 export default function CreateProjectForm() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [key, setKey] = useState("");
   const [description, setDescription] = useState("");
@@ -26,9 +24,9 @@ export default function CreateProjectForm() {
   const [priority, setPriority] = useState("Medium");
   const [startDate, setStartDate] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showNotice, setShowNotice] = useState(false);
 
+  const [state, formAction, isPending] = useActionState(createProjectAction, null);
+  console.log("state ", state);
   // Auto-generate key from project name
   const handleNameChange = (e) => {
     const val = e.target.value;
@@ -44,15 +42,36 @@ export default function CreateProjectForm() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Placeholder notification before backend integration
-    setShowNotice(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-    }, 1000);
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+  //   // Placeholder notification before backend integration
+  //   const newProject = {
+  //     name,
+  //     key,
+  //     description,
+  //     category,
+  //     priority,
+  //     startDate,
+  //     dueDate,
+  //   };
+  //   const cookieStore = await cookies();
+  //   const jwt = cookieStore.get("jwt")?.value;
+  //   const response = await fetch(`${API_URL}/projects`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Cookie: `jwt=${jwt}`,
+  //     },
+  //     body: JSON.stringify(newProject),
+  //   });
+  //   const data = await response.json();
+  //   console.log("API Response:", data);
+  //   setShowNotice(true);
+  //   setTimeout(() => {
+  //     setIsSubmitting(false);
+  //   }, 1000);
+  // };
 
   const categories = ["Software", "Design", "Marketing", "DevOps", "Operations"];
   const priorities = ["Low", "Medium", "High", "Urgent"];
@@ -70,17 +89,6 @@ export default function CreateProjectForm() {
         </Link>
       </div>
 
-      {showNotice && (
-        <Alert className="border-primary/40 bg-primary/5 text-primary">
-          <Info className="size-4" />
-          <AlertTitle className="font-semibold">Backend Integration Pending</AlertTitle>
-          <AlertDescription className="text-muted-foreground text-xs">
-            Project creation form details captured! Once the backend API is ready, new projects will
-            persist and populate the dashboard automatically.
-          </AlertDescription>
-        </Alert>
-      )}
-
       {/* Main Card */}
       <Card className="border-border/70 shadow-sm">
         <CardHeader className="border-border/60 space-y-1 border-b pb-6">
@@ -97,7 +105,7 @@ export default function CreateProjectForm() {
           </div>
         </CardHeader>
 
-        <form onSubmit={handleSubmit}>
+        <form action={formAction}>
           <CardContent className="space-y-6 pt-6">
             {/* Project Name and Key */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -111,6 +119,7 @@ export default function CreateProjectForm() {
                   value={name}
                   onChange={handleNameChange}
                   required
+                  name="name"
                 />
               </div>
 
@@ -138,6 +147,7 @@ export default function CreateProjectForm() {
                 placeholder="Brief summary of project goals, deliverables, and scope..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                name="description"
                 className="placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-lg border bg-transparent p-2.5 text-sm transition-colors outline-none focus-visible:ring-3"
               />
             </div>
@@ -213,14 +223,9 @@ export default function CreateProjectForm() {
               Cancel
             </Link>
 
-            <Button
-              type="submit"
-              size="default"
-              disabled={isSubmitting}
-              className="gap-2 shadow-xs"
-            >
+            <Button type="submit" size="default" disabled={isPending} className="gap-2 shadow-xs">
               <Sparkles className="size-4" />
-              {isSubmitting ? "Saving..." : "Create Project"}
+              {isPending ? "Saving..." : "Create Project"}
             </Button>
           </CardFooter>
         </form>
