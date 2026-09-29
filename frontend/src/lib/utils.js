@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export { cn } from "cn";
 
 export function formatProjectName(slug) {
@@ -6,4 +8,9 @@ export function formatProjectName(slug) {
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+export function formatUserDate(created) {
+  dayjs(created);
+  return dayjs().format("DD-MM-YYYY");
 }

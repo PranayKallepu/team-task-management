@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import StatCard from "@/features/projects/StatCard";
 import AssignedProjectCard from "@/features/users/AssignedProjectCard";
 import ProfileDetailItem from "@/features/users/ProfileDetailItem";
+import { formatUserDate } from "@/lib/utils";
 import {
   ArrowUpRight,
   Calendar,
@@ -64,13 +65,7 @@ export default function UserProfile({ user }) {
       {/* Profile Header Hero Card */}
       <Card className="border-border/70 overflow-hidden shadow-xs">
         {/* Cover Banner */}
-        <div
-          className="border-border/50 relative flex h-44 w-full items-start justify-between border-b px-6 py-4"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(147, 51, 234, 0.14) 50%, rgba(236, 72, 153, 0.12) 100%)",
-          }}
-        >
+        <div className="border-border/50 relative flex h-2 w-full items-start justify-between border-b px-6 py-4">
           <Badge
             variant="secondary"
             className="bg-background/85 text-foreground border-border/50 border text-xs font-medium shadow-2xs backdrop-blur-md"
@@ -78,19 +73,6 @@ export default function UserProfile({ user }) {
             <Sparkles className="text-primary mr-1 inline size-3" />
             User Profile
           </Badge>
-
-          <Link
-            href="/dashboard"
-            className={buttonVariants({
-              variant: "outline",
-              size: "sm",
-              className:
-                "bg-background/85 border-border/60 gap-1.5 text-xs font-medium shadow-2xs backdrop-blur-md",
-            })}
-          >
-            <ArrowUpRight className="size-3.5" />
-            Dashboard
-          </Link>
         </div>
 
         {/* Profile Details Bar */}
@@ -131,11 +113,11 @@ export default function UserProfile({ user }) {
       </Card>
 
       {/* 4 Stat Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      {/* <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {statItems.map((stat) => (
           <StatCard key={stat.title} stat={stat} />
         ))}
-      </div>
+      </div> */}
 
       {/* 2-Column Details Grid */}
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
@@ -145,9 +127,7 @@ export default function UserProfile({ user }) {
           <Card className="border-border/70 shadow-xs">
             <CardHeader className="pb-4">
               <CardTitle className="text-base font-semibold">Contact & Info</CardTitle>
-              <CardDescription className="text-xs">
-                Contact details and team location
-              </CardDescription>
+              <CardDescription className="text-xs">Contact details</CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
@@ -161,28 +141,18 @@ export default function UserProfile({ user }) {
               />
 
               <ProfileDetailItem
-                icon={MapPin}
-                iconBg="bg-amber-500/10"
-                iconColor="text-amber-600 dark:text-amber-400"
-                label="Location"
-                value={user.location}
-                badge={user.timezone}
-              />
-
-              <ProfileDetailItem
                 icon={Calendar}
                 iconBg="bg-emerald-500/10"
                 iconColor="text-emerald-600 dark:text-emerald-400"
                 label="Member Since"
-                value={user.joinedDate}
+                value={formatUserDate(user.createdAt)}
               />
             </CardContent>
           </Card>
         </div>
 
         {/* Right Column: Workspaces & Recent Activity */}
-        <div className="space-y-6 lg:col-span-2">
-          {/* 2. Assigned Projects Card */}
+        {/* <div className="space-y-6 lg:col-span-2">
           <Card className="border-border/70 shadow-xs">
             <CardHeader className="flex flex-row items-center justify-between pb-4">
               <div>
@@ -206,7 +176,7 @@ export default function UserProfile({ user }) {
               ))}
             </CardContent>
           </Card>
-        </div>
+        </div> */}
       </div>
     </div>
   );
