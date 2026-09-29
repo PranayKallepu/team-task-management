@@ -31,7 +31,7 @@ export default function Header({ user = { fullName: "John Doe", userName: "johnd
         </div>
 
         <Avatar className="ring-border size-9 shadow-xs ring-1">
-          <AvatarImage src="" alt={user.fullName} />
+          <AvatarImage src={user.avatarUrl} alt={user.fullName} />
           <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
             {getInitials(user.fullName)}
           </AvatarFallback>
