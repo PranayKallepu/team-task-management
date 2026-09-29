@@ -41,31 +41,10 @@ export default function ProjectCard({ project }) {
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-3 pt-0">
-          {/* Progress Bar */}
-          <div className="space-y-1.5">
-            <div className="text-muted-foreground flex justify-between text-xs font-medium">
-              <span>Progress</span>
-              <span className="text-foreground font-semibold">{progress}%</span>
-            </div>
-            <div className="bg-muted h-2 w-full overflow-hidden rounded-full">
-              <div
-                className="bg-primary h-full rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-        </CardContent>
-
         <CardFooter className="border-border/50 bg-muted/20 text-muted-foreground flex items-center justify-between border-t py-3 text-xs">
           <div className="flex items-center gap-1.5">
             <Users className="size-3.5" />
-            <span>{project.membersCount} members</span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <Calendar className="size-3.5" />
-            <span>{project.dueDate}</span>
+            <span>{project.projectMembers.length} members</span>
           </div>
         </CardFooter>
       </Card>
