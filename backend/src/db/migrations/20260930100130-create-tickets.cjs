@@ -1,0 +1,121 @@
+"use strict";
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("tickets", {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
+        primaryKey: true,
+        allowNull: false,
+      },
+
+      projectId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+      },
+
+      title: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+        defaultValue: null,
+      },
+
+      type: {
+        type: Sequelize.ENUM("bug", "feat", "task"),
+        allowNull: false,
+        defaultValue: "bug",
+      },
+
+      status: {
+        type: Sequelize.ENUM("todo", "in_progress", "in_review", "done"),
+        allowNull: false,
+        defaultValue: "todo",
+      },
+
+      priority: {
+        type: Sequelize.ENUM("low", "medium", "high", "critical"),
+        allowNull: false,
+        defaultValue: "low",
+      },
+
+      reporterId: {
+        type: "TIMESTAMP",
+        allowNull: false,
+      },
+
+      assigneeId: {
+        type: "TIMESTAMP",
+        allowNull: false,
+      },
+
+      parentTicketId: {
+        type: "TIMESTAMP",
+        allowNull: true,
+        defaultValue: null,
+      },
+
+      start_date: {
+        type: "TIMESTAMP",
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+
+      currentAssigneeDueDate: {
+        type: "TIMESTAMP",
+        allowNull: true,
+        defaultValue: null,
+      },
+
+      finalDueDate: {
+        type: "TIMESTAMP",
+        allowNull: false,
+      },
+
+      labels: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
+        defaultValue: null,
+      },
+
+      sprint: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+
+      createdAt: {
+        type: "TIMESTAMP",
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+
+      updatedAt: {
+        type: "TIMESTAMP",
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+    });
+
+    // DB-level CHECK constraints
+    await queryInterface.sequelize.query(
+      `ALTER TABLE "tickets" ADD CONSTRAINT "chk_tickets_title_min_length" CHECK (char_length(title) >= 3);`,
+    );
+  },
+
+  async down(queryInterface) {
+    await queryInterface.dropTable("tickets");
+
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Tickets_type";');
+
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Tickets_status";');
+
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Tickets_priority";');
+  },
+};
