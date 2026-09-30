@@ -11,7 +11,7 @@ module.exports = {
         allowNull: false,
       },
 
-      projectId: {
+      project_id: {
         type: Sequelize.UUID,
         allowNull: false,
       },
@@ -28,7 +28,7 @@ module.exports = {
       },
 
       type: {
-        type: Sequelize.ENUM("bug", "feat", "task"),
+        type: Sequelize.ENUM("bug", "feature", "task"), //feat to feature
         allowNull: false,
         defaultValue: "bug",
       },
@@ -45,18 +45,18 @@ module.exports = {
         defaultValue: "low",
       },
 
-      reporterId: {
-        type: "TIMESTAMP",
+      reporter_id: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
 
-      assigneeId: {
-        type: "TIMESTAMP",
+      assignee_id: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
 
-      parentTicketId: {
-        type: "TIMESTAMP",
+      parent_ticket_id: {
+        type: Sequelize.UUID,
         allowNull: true,
         defaultValue: null,
       },
@@ -67,13 +67,13 @@ module.exports = {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
 
-      currentAssigneeDueDate: {
+      current_assignee_due_date: {
         type: "TIMESTAMP",
         allowNull: true,
         defaultValue: null,
       },
 
-      finalDueDate: {
+      final_due_date: {
         type: "TIMESTAMP",
         allowNull: false,
       },
@@ -90,13 +90,13 @@ module.exports = {
         defaultValue: null,
       },
 
-      createdAt: {
+      created_at: {
         type: "TIMESTAMP",
         allowNull: false,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
 
-      updatedAt: {
+      updated_at: {
         type: "TIMESTAMP",
         allowNull: false,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
