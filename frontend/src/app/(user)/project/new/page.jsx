@@ -7,6 +7,8 @@ export const metadata = {
 };
 
 export default function NewProjectPage() {
+  console.log("hello world");
+
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
       <main className="container mx-auto max-w-7xl flex-1 p-6">
