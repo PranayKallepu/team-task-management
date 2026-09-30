@@ -12,6 +12,7 @@ import helmet from "helmet";
 import authRouter from "#src/features/auth/auth.routes.js";
 import projectRouter from "#src/features/projects/project.routes.js";
 import userRouter from "#src/features/users/user.routes.js";
+import ticketRouter from "#src/features/tickets/ticket.routes.js";
 
 const app = express();
 
@@ -74,6 +75,7 @@ app.get("/health", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/projects", projectRouter);
+app.use("/api/v1/tickets", ticketRouter);
 
 // 3) UNHANDLED ROUTES HANDLER (Express 5 compatible catch-all)
 app.use((req, res, next) => {
