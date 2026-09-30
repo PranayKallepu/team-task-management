@@ -13,7 +13,5 @@ export async function generateMetadata({ params }) {
 
 export default async function ProjectOverviewPage({ params }) {
   const { project } = await params;
-  const formattedProject = formatProjectName(project);
-
-  return <ProjectOverview project={formattedProject} />;
+  return <ProjectOverview projectSlug={project} />;
 }
