@@ -1,5 +1,6 @@
 import User from "#src/features/users/user.model.js";
 import AppError from "#src/utils/appError.js";
+import bcrypt from "bcryptjs";
 
 export const fetchCurrentUser = async (currentUser) => {
   if (currentUser) return currentUser;
@@ -34,4 +35,17 @@ export const fetchUserById = async (id) => {
   if (!user) throw new AppError("No user found with that ID", 404);
 
   return user;
+};
+
+export const updateOwnPassword = async (currentUser, body) => {
+  const { currentPassword, newPassword } = body;
+  const { password } = currentUser;
+  console.log(body, password);
+  const isPasswordMatch = await bcrypt.compare(currentPassword, password);
+  if (!isPasswordMatch) throw new AppError("Does not match current Password", 400);
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+  await User.update({ password: hashedPassword }, { where: { id: currentUser.id } });
+
+  return currentUser;
 };

@@ -2,6 +2,7 @@ import {
   fetchAllUsers,
   fetchCurrentUser,
   fetchUserById,
+  updateOwnPassword,
   updateUserProfile,
 } from "#src/features/users/user.service.js";
 
@@ -43,5 +44,14 @@ export const getUser = async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: { user },
+  });
+};
+
+// Update own Password
+export const updatePassword = async (req, res) => {
+  const updateUser = await updateOwnPassword(req.user, req.body);
+  res.status(200).json({
+    status: "success",
+    data: { user: updateUser, message: "Password Updated Successfully" },
   });
 };
